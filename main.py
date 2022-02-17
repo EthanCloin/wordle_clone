@@ -8,4 +8,11 @@ if __name__ == '__main__':
         console_ui.print_header()
         console_ui.print_console_board(words_guessed)
 
-        current_guess = input()
+        valid_guess = False
+        cur_guess = ""
+        while not valid_guess:
+            cur_guess = input(">> ")
+            valid_guess = word_bank.validate_guess(
+                previous_guesses=words_guessed, cur_guess=cur_guess)
+
+        words_guessed.append(cur_guess)
