@@ -1,4 +1,5 @@
 from wordle_pkg import word_bank
+from wordle_pkg.word_bank import WordleLetter
 
 WORD_BANK = ["crane", "power", 'slice', 'flier', 'eerie',
              "drape", "slime", "brain", "plead", "gnarl"]
@@ -40,3 +41,12 @@ def test_validate_guess_number():
     cur_guess = "12345"
     assert word_bank.validate_guess(
         previous_guesses=previous_guesses, cur_guess=cur_guess) is False
+
+
+def test_find_one_matching_letter_in_wrong_location():
+    """checks that the scoring function correctly identifies a letter that is """
+    pass
+    # cur_guess = "xxxwx"
+    # correct_word = "wordle"
+
+    # function to make 5 WordleLetter instances, compare them
