@@ -1,1 +1,7 @@
 /test_env
+.vscode/*
+.pytest_cache
+.DS_Store
+*.pyc
+settings.json
+
