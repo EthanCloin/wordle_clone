@@ -9,7 +9,6 @@ if __name__ == '__main__':
         console_ui.print_console_board(words_guessed)
 
         valid_guess = False
-        cur_guess = ""
         while not valid_guess:
             cur_guess = input(">> ")
             valid_guess = word_bank.validate_guess(

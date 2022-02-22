@@ -24,3 +24,11 @@ def print_header():
     print("W O R D L E ")
     print('<>'*6)
     print()
+
+
+def print_victory_message():
+    print("CONGRATULATIONS, YOU GOT THE WORD!")
+
+
+def print_defeat_message():
+    print("Oh No...better luck next time!")
