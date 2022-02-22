@@ -1,9 +1,12 @@
 from . import console_ui
 from . import word_bank
-# import console_ui
 
 
 class WordleGame:
+    """represents the game as a whole. contains methods to draw the board, validate guesses, 
+    and check for victory condition
+    """
+
     def __init__(self):
         self.is_active = True
         self.guesses = []
@@ -29,15 +32,14 @@ class WordleGame:
         Returns:
             bool: True if valid, otherwise False
         """
+
         if len(user_guess) == 5 and user_guess.isalpha():
             # check whether already guessed
             if user_guess not in self.guesses:
                 self.latest_guess_string = user_guess
                 return True
-            else:
-                print("You already guessed that!")
-        else:
-            print("5 letter words ONLY!")
+            print("You already guessed that!")
+        print("5 letter words ONLY!")
 
         return False
 
@@ -77,91 +79,60 @@ class WordleGame:
 
         # if any letter isn't correct, return false
         for letter in self.latest_guess_letters:
-            if letter.get_correctness() != WordleLetter.CORRECT:
+            if letter.correctness != WordleLetter.CORRECT:
                 return False
         return True
 
 
 class WordleLetter:
+    """represents a letter tile. class defines valid letters, correctness values, and comparison between instances
+    """
     CORRECT = 1
     WRONG = 0
     PARTIAL = -1
-    CORRECTNESS_VALUES = [CORRECT, WRONG, PARTIAL]
+    CORRECTNESS_VALUES = [CORRECT, WRONG, PARTIAL, None]
+    ACCEPTED_LETTERS = "abcdefhijklmnopqrstuvwxyz"
 
-    def __init__(self, letter, correctness=None):
+    def __init__(self, letter: str, correctness=None):
         """constructor"""
-        self._letter = letter
+        self._letter = self.letter_setter(letter)
         self._correctness = correctness
 
     def __eq__(self, other):
         """ensure that letter is the comparison factor for this class"""
-        if self.letter == other.letter:
-            return True
-        return False
+        return self.letter == other.letter
 
+    @property
+    def correctness(self):
+        """_summary_
+
+        Returns:
+            int: correctness value
+        """
+        return self._correctness
+
+    @correctness.setter
     def set_correctness(self, correctness_value):
         """setter for correctness attribute
 
         Args:
-            correctness_value (int): one of three constants defined by class
-
-        Returns:
-            bool: True if accepted value, otherwise False
+            correctness_value (int): one of three constants defined by class or None
         """
 
-        if correctness_value in self.CORRECTNESS_VALUES:
-            self.correctness = correctness_value
-            return True
-        return False
+        if correctness_value not in self.CORRECTNESS_VALUES:
+            raise ValueError
+        self._correctness = correctness_value
 
-    def get_correctness(self):
-        return self._correctness
+    @property
+    def letter(self):
+        """getter for letter"""
+        print('letter getter called')
+        return self._letter
 
-
-# def score_word(user_guess, solution_word) -> list[WordleLetter]:
-#     """compares a given guess and solution to generate a list of WordleLetter instances
-#     which have appropriate correctness values
-
-#     Args:
-#         user_guess (str): valid word guessed by user
-#         solution_word (str): correct word
-
-#     Returns:
-#         list[WordleLetter]: five WordleLetter objects with appropriate correctness values
-#     """
-
-#     wordle_letter_list = []
-#     for idx, letter in enumerate(user_guess):
-#         # check for perfect match
-#         if letter == solution_word[idx]:
-#             # add WL object with CORRECT value to list
-#             wordle_letter_list.append(
-#                 WordleLetter(letter, WordleLetter.CORRECT))
-#         elif letter in solution_word:
-#             wordle_letter_list.append(
-#                 WordleLetter(letter, WordleLetter.PARTIAL))
-#         else:
-#             wordle_letter_list.append(WordleLetter(letter, WordleLetter.WRONG))
-
-#     return wordle_letter_list
-
-
-# def decide_outcome(user_guess, solution_word) -> bool:
-#     """checks whether every letter matches the solution word
-
-#     Args:
-#         user_guess (_type_): valid word guessed by user
-#         solution_word (_type_): correct word
-
-#     Returns:
-#         bool: _description_
-#     """
-
-#     # get list of WordleLetters
-#     wordle_letter_list = score_word(user_guess, solution_word)
-
-#     # if any letter isn't correct, return false
-#     for letter in wordle_letter_list:
-#         if letter.get_correctness() != WordleLetter.CORRECT:
-#             return False
-#     return True
+    def letter_setter(self, letter):
+        """weird custom setter since constructor doesn't call actual property setters"""
+        print('letter setter called')
+        lower_letter = letter.lower()
+        if lower_letter not in self.ACCEPTED_LETTERS:
+            raise ValueError
+        return lower_letter

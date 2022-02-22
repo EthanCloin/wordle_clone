@@ -1,21 +1,29 @@
+import sys
 from wordle_pkg.wordle_game import WordleGame
 
+
 if __name__ == '__main__':
+    # instantiate game object
     game = WordleGame()
     game.is_active = True
-    # WordleGame().check_guess(guess='guess')
+
+    # main game loop
     while game.is_active:
+        # draw board
         game.draw_board()
 
-        valid_guess = False
-        while not valid_guess:
-            valid_guess = game.validate_guess(input(">> "))
+        # loop until a valid word is guessed
+        VALID_GUESS = False
+        while not VALID_GUESS:
+            VALID_GUESS = game.validate_guess(input(">> "))
 
+        # update game obj with validated guess
         game.process_valid_guess(game.latest_guess_string)
-        didWin = game.check_solution()
-        if didWin:
+        DID_WIN = game.check_solution()
+
+        if DID_WIN:
             print("ayo")
-            exit(0)
+            game.is_active = False
         else:
             print("oof")
 
