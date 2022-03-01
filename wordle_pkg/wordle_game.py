@@ -7,20 +7,22 @@ class WordleGame:
     and check for victory condition
     """
 
+    MAX_GUESSES = 6
+
     def __init__(self):
         self.is_active = True
-        self.guesses = []
+        self.guesses_list = []
         self.solution = word_bank.generate_word()  # self.generate_word()
         self.latest_guess_letters = []  # list of WordleLetters
         self.latest_guess_string = ""
 
     def add_guess(self, validated_guess: str) -> None:
         """append guess to guesses list"""
-        self.guesses.append(validated_guess)
+        self.guesses_list.append(validated_guess)
 
     def draw_board(self) -> None:
         """use console_ui to print board"""
-        console_ui.print_console_board(self.guesses)
+        console_ui.print_console_board(self.guesses_list)
 
     def validate_guess(self, user_guess: str) -> bool:
         """checks that a guess is a 5 letter alpha str
@@ -35,15 +37,15 @@ class WordleGame:
 
         if len(user_guess) == 5 and user_guess.isalpha():
             # check whether already guessed
-            if user_guess not in self.guesses:
-                self.latest_guess_string = user_guess
+            if user_guess not in self.guesses_list:
+                self.add_guess(user_guess)
                 return True
             print("You already guessed that!")
         print("5 letter words ONLY!")
 
         return False
 
-    def process_valid_guess(self, user_guess) -> None:
+    def process_valid_guess(self) -> None:
         """compares a given guess and solution to generate a list of WordleLetter instances
         which have appropriate correctness values
 
@@ -55,9 +57,10 @@ class WordleGame:
 
         # clear latest_guess and update list of guessed words
         self.latest_guess_letters.clear()
-        self.add_guess(user_guess)
+        latest_guess = self.guesses_list[len(self.guesses_list) - 1]
+        print(f"latest guess is: {latest_guess}")
 
-        for idx, letter in enumerate(user_guess):
+        for idx, letter in enumerate(latest_guess):
             # check for perfect match
             if letter == self.solution[idx]:
                 # add WL object with CORRECT value to list

@@ -9,7 +9,7 @@ def test_adding_one_guess():
     """adds a word to guesses list
     """
     TEST_GAME.add_guess("testy")
-    assert TEST_GAME.guesses[0] is "testy"
+    assert TEST_GAME.guesses_list[0] is "testy"
 
 
 def test_validate_guess_five_letter_word():
@@ -39,8 +39,8 @@ def test_validate_guess_number():
 def test_find_one_matching_letter_in_wrong_location():
     """checks that the scoring function correctly identifies a letter that is cor"""
     TEST_GAME.solution = "words"
-    cur_guess = "xwxxx"
-    TEST_GAME.process_valid_guess(cur_guess)
+    TEST_GAME.add_guess("xwxxx")
+    TEST_GAME.process_valid_guess()
 
     assert TEST_GAME.latest_guess_letters[0].correctness is WordleLetter.WRONG
     assert TEST_GAME.latest_guess_letters[1].correctness is WordleLetter.PARTIAL
@@ -52,8 +52,8 @@ def test_find_one_matching_letter_in_wrong_location():
 def test_find_one_matching_letter_in_right_location():
     """checks that the scoring function correctly identifies a letter that is cor"""
     TEST_GAME.solution = "words"
-    cur_guess = "wxxxx"
-    TEST_GAME.process_valid_guess(cur_guess)
+    TEST_GAME.add_guess("wxxxx")
+    TEST_GAME.process_valid_guess()
 
     assert TEST_GAME.latest_guess_letters[0].correctness is WordleLetter.CORRECT
     assert TEST_GAME.latest_guess_letters[1].correctness is WordleLetter.WRONG
@@ -65,8 +65,8 @@ def test_find_one_matching_letter_in_right_location():
 def test_find_two_matching_letters_in_right_location():
     """checks that the scoring function correctly identifies two correct letters"""
     TEST_GAME.solution = "words"
-    cur_guess = "wxxdx"
-    TEST_GAME.process_valid_guess(cur_guess)
+    TEST_GAME.add_guess("wxxdx")
+    TEST_GAME.process_valid_guess()
 
     assert TEST_GAME.latest_guess_letters[0].correctness is WordleLetter.CORRECT
     assert TEST_GAME.latest_guess_letters[1].correctness is WordleLetter.WRONG
@@ -78,7 +78,8 @@ def test_find_two_matching_letters_in_right_location():
 def test_detect_correct_word():
     """checks that guessing the solution results in True"""
     TEST_GAME.solution = "words"
-    TEST_GAME.process_valid_guess("words")
+    TEST_GAME.add_guess("words")
+    TEST_GAME.process_valid_guess()
 
     assert TEST_GAME.check_solution() is True
 
@@ -86,7 +87,8 @@ def test_detect_correct_word():
 def test_detect_incorrect_word():
     """checks that guessing the wrong solution results in False"""
     TEST_GAME.solution = "xxxxx"
-    TEST_GAME.process_valid_guess("words")
+    TEST_GAME.add_guess("words")
+    TEST_GAME.process_valid_guess()
 
     assert TEST_GAME.check_solution() is False
 
