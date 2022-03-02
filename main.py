@@ -4,7 +4,7 @@ from wordle_pkg.wordle_game import WordleGame
 
 if __name__ == '__main__':
     # instantiate game object
-    game = WordleGame()
+    game = WordleGame("right")
     game.is_active = True
 
     # main game loop
@@ -18,25 +18,23 @@ if __name__ == '__main__':
             VALID_GUESS = game.validate_guess(input(">> "))
 
         # update game obj with validated guess
-        game.process_valid_guess(game.latest_guess_string)
-        DID_WIN = game.check_solution()
+        game.process_valid_guess()
+        game_status = game.check_game_over()
 
-        if DID_WIN:
-            print("ayo")
-            game.is_active = False
-        else:
-            print("oof")
+        if game_status is WordleGame.IN_PROGRESS_STATUS:
+            continue
+        elif game_status is WordleGame.LOSE_STATUS:
+            game.draw_board()
+            print("Loser")
+            break
+        elif game_status is WordleGame.WIN_STATUS:
+            game.draw_board()
+            print("Winner")
+            break
 
-    # words_guessed = []
-
-    # while game_active:
-    #     console_ui.print_header()
-    #     console_ui.print_console_board(words_guessed)
-
-    #     valid_guess = False
-    #     while not valid_guess:
-    #         cur_guess = input(">> ")
-    #         valid_guess = word_bank.validate_guess(
-    #             previous_guesses=words_guessed, cur_guess=cur_guess)
-
-    #     words_guessed.append(cur_guess)
+        # if DID_WIN:
+        #     print("ayo")
+        #     game.is_active = False
+        #     break
+        # else:
+        #     print("oof")

@@ -12,7 +12,7 @@ def print_console_board(previous_guesses=[]):
     for word in previous_guesses:
         print(word)
 
-    remaining_row_count = 5 - len(previous_guesses)
+    remaining_row_count = 6 - len(previous_guesses)
     for _ in range(0, remaining_row_count):
         for _ in range(0, 5):
             print('_', end=" ")

@@ -9,10 +9,15 @@ class WordleGame:
 
     MAX_GUESSES = 6
 
-    def __init__(self):
+    # Status constants
+    LOSE_STATUS = 0
+    WIN_STATUS = 1
+    IN_PROGRESS_STATUS = -1
+
+    def __init__(self, solution=word_bank.generate_word()):
         self.is_active = True
         self.guesses_list = []
-        self.solution = word_bank.generate_word()  # self.generate_word()
+        self.solution = solution
         self.latest_guess_letters = []  # list of WordleLetters
         self.latest_guess_string = ""
 
@@ -86,6 +91,20 @@ class WordleGame:
                 return False
         return True
 
+    def check_game_over(self) -> int:
+        """checks whether latest guess is correct or max guesses is reached
+
+        Returns:
+            int: one of three class constant int values: LOSE_STATUS, WIN_STATUS, or IN_PROGRESS_STATUS
+        """
+
+        if self.check_solution():
+            return self.WIN_STATUS
+        elif len(self.guesses_list) == self.MAX_GUESSES:
+            return self.LOSE_STATUS
+
+        return self.IN_PROGRESS_STATUS
+
 
 class WordleLetter:
     """represents a letter tile. class defines valid letters, correctness values, and comparison between instances
@@ -94,7 +113,7 @@ class WordleLetter:
     WRONG = 0
     PARTIAL = -1
     CORRECTNESS_VALUES = [CORRECT, WRONG, PARTIAL, None]
-    ACCEPTED_LETTERS = "abcdefhijklmnopqrstuvwxyz"
+    ACCEPTED_LETTERS = "abcdefghijklmnopqrstuvwxyz"
 
     def __init__(self, letter: str, correctness=None):
         """constructor"""
@@ -129,12 +148,10 @@ class WordleLetter:
     @property
     def letter(self):
         """getter for letter"""
-        print('letter getter called')
         return self._letter
 
     def letter_setter(self, letter):
         """weird custom setter since constructor doesn't call actual property setters"""
-        print('letter setter called')
         lower_letter = letter.lower()
         if lower_letter not in self.ACCEPTED_LETTERS:
             raise ValueError
