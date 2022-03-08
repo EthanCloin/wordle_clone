@@ -3,7 +3,8 @@
 .pytest_cache
 .DS_Store
 *.pyc
-*/__pycache__/*
+**/__pycache__/**
+wordle_pkg/__pycache__/*
 
 # from online
 .DS_Store

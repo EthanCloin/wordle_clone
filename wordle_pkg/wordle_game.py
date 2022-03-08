@@ -1,6 +1,7 @@
 from . import console_ui
 from . import word_bank
 from . import graphical_ui as gui
+from enum import Enum
 
 
 class WordleGame:
@@ -11,11 +12,12 @@ class WordleGame:
     MAX_GUESSES = 6
 
     # Status constants
-    LOSE_STATUS = 0
-    WIN_STATUS = 1
-    IN_PROGRESS_STATUS = -1
+    class Status(Enum):
+        LOSE = 0
+        WIN = 1
+        IN_PROGRESS = -1
 
-    def __init__(self, solution=word_bank.generate_word()):
+    def __init__(self, solution):
         self.is_active = True
         self.guesses_list = []
         self.solution = solution
@@ -100,11 +102,11 @@ class WordleGame:
         """
 
         if self.check_solution():
-            return self.WIN_STATUS
+            return self.Status.WIN
         elif len(self.guesses_list) == self.MAX_GUESSES:
-            return self.LOSE_STATUS
+            return self.Status.LOSE
 
-        return self.IN_PROGRESS_STATUS
+        return self.Status.IN_PROGRESS
 
 
 class WordleLetter:
