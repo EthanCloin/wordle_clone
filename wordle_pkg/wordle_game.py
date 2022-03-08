@@ -1,5 +1,6 @@
 from . import console_ui
 from . import word_bank
+from . import graphical_ui as gui
 
 
 class WordleGame:
@@ -115,9 +116,10 @@ class WordleLetter:
     CORRECTNESS_VALUES = [CORRECT, WRONG, PARTIAL, None]
     ACCEPTED_LETTERS = "abcdefghijklmnopqrstuvwxyz"
 
-    def __init__(self, letter: str, correctness=None):
+    def __init__(self, letter: str, position: int, correctness=None):
         """constructor"""
         self._letter = self.letter_setter(letter)
+        self.position = position
         self._correctness = correctness
 
     def __eq__(self, other):
@@ -154,5 +156,43 @@ class WordleLetter:
         """weird custom setter since constructor doesn't call actual property setters"""
         lower_letter = letter.lower()
         if lower_letter not in self.ACCEPTED_LETTERS:
-            raise ValueError
+            raise ValueError("only accepts alpha characters")
         return lower_letter
+
+
+class WordleWord():
+    """contains 5 wordle letters"""
+    ACCEPTED_LEN = 5
+
+    def __init__(self, letters: str):
+        self.letters = self.to_wordle(letters)
+
+    def to_wordle(self, letters: str) -> list[WordleLetter]:
+        """converts string to list of WordleLetters"""
+        if len(letters) != self.ACCEPTED_LEN:
+            raise(ValueError(f"Acceptable word length is {self.ACCEPTED_LEN}"))
+
+        wl_list = []
+        for idx, letter in enumerate(letters):
+            wl_list.append(WordleLetter(letter, idx))
+        return wl_list
+
+    def check_against_solution(self, solution) -> bool:
+        """compare a WordleWord guess to provided solution and update the correctness values"""
+        if type(solution) is not WordleWord:  # possible spot for error
+            solution = self.to_wordle(solution)
+
+        # set correctness values for wordle letters
+        for idx, letter in enumerate(self.letters):
+            if letter in solution:
+                if letter.position == solution[idx].position:
+                    letter.correctness = WordleLetter.CORRECT
+                letter.correctness == WordleLetter.PARTIAL
+            letter.correctness == WordleLetter.WRONG
+
+        # check for exact match
+        for letter in self.letters:
+            if letter.correctness != WordleLetter.CORRECT:
+                return False
+
+        return True

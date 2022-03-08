@@ -3,6 +3,7 @@
 .pytest_cache
 .DS_Store
 *.pyc
+*/__pycache__/*
 
 # from online
 .DS_Store

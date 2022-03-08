@@ -4,10 +4,10 @@ from PyQt6.QtGui import QPalette, QColor, QTextCursor
 from PyQt6.QtCore import QSize
 
 
-class MainWindow(QMainWindow):
+class WordleBoard(QMainWindow):
 
     def __init__(self):
-        super(MainWindow, self).__init__()
+        super(WordleBoard, self).__init__()
 
         self.setWindowTitle("Test")
         self.letters_layout = QGridLayout()
@@ -29,12 +29,12 @@ class MainWindow(QMainWindow):
 
         # first row figure how to set active focus
         for j in range(5):
-            self.letters_layout.addWidget(WordleLetter(), 0, j)
+            self.letters_layout.addWidget(WordleLetterTile(), 0, j)
 
         # other rows figure how to set inactive focus
         for i in range(1, 6):
             for j in range(5):
-                this_letter = WordleLetter()
+                this_letter = WordleLetterTile()
                 self.letters_layout.addWidget(this_letter, i, j)
 
 
@@ -49,10 +49,10 @@ class Color(QWidget):
         self.setPalette(palette)
 
 
-class WordleLetter(QLineEdit):
+class WordleLetterTile(QLineEdit):
 
     def __init__(self):
-        super(WordleLetter, self).__init__()
+        super(WordleLetterTile, self).__init__()
         self.setFixedSize(QSize(120, 120))
         self.setAutoFillBackground(True)
 
@@ -78,8 +78,8 @@ class WordleLetter(QLineEdit):
         self.setTextMargins(margin)
 
 
-app = QApplication(sys.argv)
-window = MainWindow()
-window.show()
+# app = QApplication(sys.argv)
+# window = WordleBoard()
+# window.show()
 
-app.exec()
+# app.exec()
