@@ -2,7 +2,6 @@
 .vscode
 .pytest_cache
 .DS_Store
-*.pyc
 **/__pycache__/**
 wordle_pkg/__pycache__/*
 
